@@ -1,0 +1,46 @@
+﻿@using System.Text
+@model Library.ViewModels.BooksTableViewModel
+
+<div class="col-lg-6">
+    <div class="row">
+        <div class="col d-flex justify-content-start align-items-center"></div>
+        <div class="col d-flex justify-content-center align-items-center">
+            <h1>@Model.Title</h1></div>
+        <div class="col d-flex justify-content-end align-items-center"></div>
+    </div>
+
+	<table class="table table-hover container">
+		<thead>
+		<tr>
+			<th>#</th>
+			<th>Title</th>
+			<th>Genre</th>
+			<th>Author</th>
+			<th>Available</th>
+			<th>Total Quantity</th>
+			<th>Active Loans</th>
+			<th>Expired Loans</th>
+			<th>Total Loans</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var book in Model.Books)
+		{
+			<tr class="@(book.Available < 1 ? "table-secondary" : "")"
+			    role="button"
+			    onclick="location.href = '@Url.ActionLink("Index", "Book", new { id = book.BookID })'"
+			>
+				<th>@book.BookID</th>
+				<td>@book.Title</td>
+				<td>@book.Genre</td>
+				<td>@book.Author</td>
+				<td>@book.Available</td>
+				<td>@book.Quantity</td>
+				<td>@book.Loans.Count(l => l.State == LoanState.Active)</td>
+				<td>@book.Loans.Count(l => l.State == LoanState.Expired)</td>
+				<td>@book.Loans.Count</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>

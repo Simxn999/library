@@ -1,0 +1,70 @@
+﻿@using System.Text
+@model Library.ViewModels.LoansTableViewModel
+
+<div class="col-lg-6">
+    <div class="row">
+        <div class="col d-flex justify-content-start align-items-center"></div>
+        <div class="col d-flex justify-content-center align-items-center">
+            <h1>
+                @Model.Title
+            </h1></div>
+        <div class="col d-flex justify-content-end align-items-center"></div>
+    </div>
+
+    <table class="table table-hover container">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameForInnerType((Loan l) => l.LoanID)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((Loan l) => l.InitiatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((Loan l) => l.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((Loan l) => l.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((Loan l) => l.Books)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((Loan l) => l.State)
+            </th>
+        </tr>
+        </thead>
+        <tbody> 
+        @foreach (var loan in Model.Loans)
+        {
+            <tr role="button"
+                onclick="location.href = '@Url.ActionLink("Index", "Loan", new { id = loan.LoanID })'">
+                <th>
+                    @loan.LoanID
+                </th>
+                <td>
+                    @loan.InitiatedDate.ToShortDateString()
+                </td>
+                <td>
+                    @loan.DueDate.ToShortDateString()
+                </td>
+                <td>
+                    @loan.Customer.Fullname
+                </td>
+                <td>
+                    @(new StringBuilder().AppendJoin(", ", loan.Books.Select(b => b.Title)))
+                </td>
+                <td class="fw-bold @(loan.State switch
+                                     {
+                                     LoanState.Completed => "text-success",
+                                     LoanState.Active => "text-primary",
+                                     LoanState.Expired => "text-danger",
+                                     _ => ""
+                                     })">
+                    @loan.State
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,118 @@
+﻿@using Library.ViewModels
+@model Loan
+
+
+<div class="col-lg-2" style="min-width: max-content"> 
+    <div class="row">
+        <div class="col d-flex justify-content-start align-items-end">
+            <a class="d-flex align-items-center gap-2 text-decoration-none" asp-controller="Loans" asp-action="List">
+	            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+		            <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+	            </svg>
+                <span style="min-width: max-content">
+                    Go Back
+                </span>
+            </a>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+            <h1>
+                @Model.Title
+            </h1>
+        </div>
+        <div class="col d-flex justify-content-end align-items-end"></div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col text-start">
+                    <p class="fs-5 fw-bold mb-0">
+                        @Html.DisplayNameFor(m => m.LoanID)
+                    </p>
+                </div>
+                <div class="col text-end">
+                    <p class="fs-5 mb-0">
+                        #@Model.LoanID
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col text-start">
+                    <p class="fs-5 mb-0">
+                        @Html.DisplayNameFor(m => m.Customer)
+                    </p>
+                </div>
+                <div class="col text-end">
+                    <a class="text-decoration-none pe-2" asp-controller="Customer" asp-action="Index" asp-route-id="@Model.CustomerID">
+                        @Model.Customer.Fullname
+                    </a>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col text-start">
+                    <p class="fs-5 mb-0">
+                        @Html.DisplayNameFor(m => m.InitiatedDate)
+                    </p>
+                </div>
+                <div class="col text-end">
+                    <p class="text-muted mb-0 pe-2">
+                        @Model.InitiatedDate.ToShortDateString()
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col text-start">
+                    <p class="fs-5 mb-0">
+                        @Html.DisplayNameFor(m => m.DueDate)
+                    </p>
+                </div>
+                <div class="col text-end">
+                    <p class="text-muted mb-0 pe-2">
+                        @Model.DueDate.ToShortDateString()
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col text-start">
+                    <p class="fs-5 mb-0">
+                        @Html.DisplayNameFor(m => m.State)
+                    </p>
+                </div>
+                <div class="col text-end">
+                    <p class="mb-0 pe-2 @(Model.State switch
+                                          {
+                                          LoanState.Completed => "fw-bold text-success",
+                                          LoanState.Active => "fw-bold text-primary",
+                                          LoanState.Expired => "fw-bold text-danger",
+                                          _ => "text-muted"
+                                          })">
+                        @Model.State
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col text-start">
+                    <p class="fs-5 mb-0">
+                        @Html.DisplayNameFor(m => m.Books)
+                    </p>
+                </div>
+                <div class="col text-end">
+                    @if (@Model.Books.Any())
+                    {
+                        <a class="text-decoration-none pe-2" asp-action="Books" asp-route-id="@Model.LoanID">
+                            @Model.Books.Count
+                        </a>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0 pe-2">@Model.Books.Count</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
